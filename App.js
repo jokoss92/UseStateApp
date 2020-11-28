@@ -1,69 +1,43 @@
 import React from 'react';
-import { StatusBar, Text, View, TouchableOpacity, StyleSheet } from "react-native"
+import { Text, View } from "react-native"
  
 class App extends React.Component {
+    // TODO (1) Define the state object
     state = {
-      score = 0
+        seconds: 0
     }
-
+ 
+    // TODO (2) Create tick function to update seconds state
+    tick() {
+        this.setState(state => ({
+            seconds: state.seconds + 1
+        }))
+    }
+ 
+    // TODO (3) Create interval referrence inside componentDidMount with setInterval value to create the timer 
+    // & call tick function inside the setInterval callbacks
+    componentDidMount() {
+        this.interval = setInterval(() => {
+            this.tick()
+        }, 1000); // in milliseconds
+    }
+ 
+    // TO DO (4) call clearInterval function to remove the interval referrence inside componentWillUnmount
+    componentWillUnmount() {
+        clearInterval(this.interval)
+    }
+ 
     render() {
         return (
-            <View style={styles.mainContainer}>
-                <StatusBar backgroundColor={"rgb(220,81,83)"} barStyle={"light-content"} />
-                <View style={styles.scoreContainer}>
-                    <Text style={styles.scoreTitleText}>{"Score"}</Text>
-                    <Text style={styles.scoreValueText}>{"0"}</Text>
-                </View>
-                <View style={styles.buttonContainer}>
-                    <TouchableOpacity
-                        style={styles.buttonStyle}
-                        onPress={()=>{
-                          this.setState({ score = this.state.score +1})
-                        }}>
-                        <Text style={styles.buttonText}>{"+"}</Text>
-                    </TouchableOpacity>
-                    <View style={styles.horizontalSeparator} />
-                    <TouchableOpacity
-                        style={styles.buttonStyle}
-                        onPress={()=>{
-                          this.setState({ score = this.state.score +1})
-                        }}>
-                        <Text style={styles.buttonText}>{"-"}</Text>
-                    </TouchableOpacity>
+            <View style={{ flex: 1, margin: 16 }}>
+                <View>
+                    {/* TO DO (5) use this.state.seconds to get the value from our state */}
+                    <Text>{"Seconds : " + this.state.seconds}</Text>
                 </View>
             </View>
         )
     }
 }
- 
-const styles = StyleSheet.create({
-    mainContainer: {
-        flex: 1,
-        padding: 16,
-        backgroundColor: "rgb(240,81,83)"
-    },
-    scoreContainer: {
-        alignItems: "center"
-    },
-    scoreTitleText: {
-        textAlign: "center", fontSize: 64, color: "#FFF8DE"
-    },
-    scoreValueText: {
-        textAlign: "center", fontSize: 128, color: "#FFF8DE"
-    },
-    buttonContainer: {
-        flexDirection: "row", marginTop: 8,
-    },
-    buttonStyle: {
-        flex: 1, backgroundColor: "#FFF8DE", aspectRatio: 1.5, alignItems: "center", justifyContent: "center"
-    },
-    buttonText: {
-        fontSize: 64, color: "rgb(240,81,83)"
-    },
-    horizontalSeparator: {
-        marginHorizontal: 8
-    }
-})
  
 export default App
  
